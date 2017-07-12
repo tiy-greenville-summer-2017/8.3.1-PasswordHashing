@@ -4,13 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_ENV=test mocha tests"
   },
   "author": "",
   "license": "ISC",
+  "jshintConfig": {
+    "esversion": 6
+  },
   "dependencies": {
     "bluebird": "^3.5.0",
     "express": "^4.15.3",
     "mongoose": "^4.10.8"
+  },
+  "devDependencies": {
+    "chai": "^4.1.0"
   }
 }
