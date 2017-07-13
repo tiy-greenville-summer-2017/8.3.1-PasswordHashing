@@ -19,9 +19,20 @@ const createPasswordHashObject = (password, salt="") => {
   const hashString = hash.toString("base64");
   return {salt: salt, iterations: 100, hash: hashString};
 };
-// write function that takes password and returns object with details
+
+const login = (username, password) => {
+  return User.findOne({username: username}).then(user => {
+    if (!user) {
+      return false;
+    }
+    const pwObject = user.password;
+    const newPWObject = createPasswordHashObject(password, pwObject.salt);
+    return pwObject.hash === newPWObject.hash;
+  });
+};
 
 module.exports = {
   createUser: createUser,
+  login: login,
   createPasswordHashObject: createPasswordHashObject
 };

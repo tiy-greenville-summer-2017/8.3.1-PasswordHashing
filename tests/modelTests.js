@@ -1,9 +1,42 @@
 
+const User = require('../models/user');
 const createUser = require('../app').createUser;
 const createPasswordHashObject = require('../app').createPasswordHashObject;
 const expect = require('chai').expect;
+const login = require('../app').login;
 
 describe('user model tests', () => {
+
+  afterEach((done) => {
+    User.deleteMany({}).then(() => {
+      done();
+    });
+  });
+
+  it('will not login if invalid user', (done) => {
+    login("peanut", "greenies").then(result => {
+      expect(result).to.equal(false);
+      done();
+    });
+  });
+
+  it('will not login if invalid password', (done) => {
+    createUser("peanut", "greenies").then(user => {
+      login("peanut", "skateboard").then(result => {
+        expect(result).to.equal(false);
+        done();
+      });
+    });
+  });
+
+  it('will login if valid password', (done) => {
+    let myUser = createUser("peanut", "greenies").then(user => {
+      login("peanut", "greenies").then(result => {
+        expect(result).to.equal(true);
+        done();
+      });
+    });
+  });
 
   it('can generate a password object from password string', (done) => {
     const passwordObject = createPasswordHashObject("peanut", "a");
